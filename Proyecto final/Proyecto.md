@@ -42,4 +42,42 @@
 3. Ventajas y desventajas de EXT4 y NTFS
    1. EXT4:
       1. Ventajas:
-         1. 
+         1. Soporte para nombres largos y enlaces simbólicos.
+         2. Buen performace con archivos grandes.
+         3. Reduce la fragmentación en el disco.
+         4. Permite un número ilimitado de inodos.
+      2. Desventajas:
+         1. No soporta el atributo de "eliminación segura".
+         2. No nativa para Windows y MacOS.
+         3. La función de asignación retrasada podría provocar una posible pérdida de datos.
+   2. NTFS:
+      1. Ventajas:
+         1. Admite archivos de tamaño gigantesco.
+         2. Casi no tiene límites realistas de tamaño de partición o de tamaño de archivo al cambiar el tamaño del clúster.
+         3. Permite a los usuarios configurar la compresión de archivos cuando se queda sin espacio en disco.
+         4. Proporciona un cifrado transparente y sólido de cualquier archivo o carpeta en un volumen NTFS.
+         5. Utiliza archivos de registro e información de puntos de control para restaurar automáticamente la consistencia del sistema de archivos.
+         6. Utiliza algoritmos CompactOS que comprimen toda la partición del sistema y evitan la fragmentación al escribir datos comprimidos en fragmentos asignados de forma contigua.
+         7. Agrega la función de cambio de tamaño para reducir o expandir una partición.
+         8. Utiliza un diario de cambios para restaurar la información cuando ocurre un corte de energía u otros problemas del sistema.
+         9. Permite a los usuarios configurar cuotas de disco que limitan la cantidad de espacio que los usuarios pueden consumir.
+      2.  Desventajas:
+          1.  No es compatible con sistemas operativos muy antiguos.
+          2.  Limitaciones en la denominación de archivos.
+          3.  No admite el formateo de disquetes.
+          4.  Requiere una gran cantidad de “sobrecarga de espacio” para funcionar.
+### Organización lógica y física 
+1. *
+2. El programa primero hace la solicitud para acceder a datos en una dirección lógica, luego se consulta la tabla de asignación correspondiente al sistema de archivos, posteriormente se hace la conversión a coordenadas físicas en el disco, se accede a esas coordenadas en el disco y se hace la transferiencia de los datos solicitados.
+3. Supongamos que un archivo está dividido en bloques lógicos. Cuando se accede a un bloque:
+   1. El i-nodo del archivo almacena punteros a los bloques físicos:
+      * Punteros directos: Apuntan directamente a bloques en el disco.
+      * Punteros indirectos: Apuntan a otros bloques que contienen más punteros.
+   2. El sistema consulta el i-nodo para encontrar la dirección física del bloque lógico solicitado.
+   3. El controlador accede al bloque físico correspondiente en el disco.
+### Mecanismos de acceso a los archivos
+1. Mecanismos de acceso:
+   1. Secuencial: Es cuando un grupo de elementos es accedido en un predeterminado orden secuencial. En determinados casos es la única forma de acceder a los datos.
+   2. Directo: Explotan la capacidad de los discos para acceder directamente a cualquier bloque de dirección conocida.
+   3. Indexado: Método común de acceso a disco que almacena datos en forma secuencial, al tiempo que mantiene un índice de campos claves para todos los registros en el archivo para acceso directo.
+2. 
