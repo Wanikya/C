@@ -80,4 +80,45 @@
    1. Secuencial: Es cuando un grupo de elementos es accedido en un predeterminado orden secuencial. En determinados casos es la única forma de acceder a los datos.
    2. Directo: Explotan la capacidad de los discos para acceder directamente a cualquier bloque de dirección conocida.
    3. Indexado: Método común de acceso a disco que almacena datos en forma secuencial, al tiempo que mantiene un índice de campos claves para todos los registros en el archivo para acceso directo.
-2. 
+2. *
+3. Comparación entre mecanismos de acceso: *
+   1. Secuencial: Simplicidad, eficiencia en lectura completa, menos movimiento
+      1. Casos de uso: Logs, multimedia, cintas magnéticas
+   2. Directo: Acceso rápido, ideal para consultas aleatorias
+      1. Bases de datos, documentos, sistemas operativos
+   3. Indexado: Eficiencia en búsquedas, escalabilidad, organización estructurada
+      1. Bases de datos grandes, catálogos, sistemas de archivos
+### Modelo jerárquico y mecanismos de recuperación en caso de falla *
+1. *
+2. *
+3. *
+## Protección y seguridad
+### Concepto y objetivos de protección y seguridad
+1. Conceptos:
+   1. Protección: Es un mecanismo para controlar el acceso de los programas, de los procesos o de los usuarios a los recursos definidos por el sistema informático.
+   2. Seguridad: Es el conjunto de medidas tomadas para protegerse contra robos, ataques, crímenes y espionajes o sabotajes.
+2. Objetivos principales:
+   1. Protección de Recursos: Evitar que procesos o usuarios no autorizados accedan, modifiquen o interfieran con los recursos del sistema.
+   2. Confidencialidad: Garantizar que la información sensible sea accesible únicamente para usuarios o procesos autorizados.
+   3. Integridad: Asegurar que los datos y recursos no sean modificados de forma no autorizada o accidental.
+   4. Disponibilidad: Garantizar que los recursos y servicios del sistema estén accesibles para los usuarios legítimos cuando los necesiten
+   5. Autenticación: Verificar la identidad de los usuarios y procesos antes de otorgarles acceso al sistema.
+   6. Prevención de Errores Humanos: Minimizar el impacto de errores accidentales.
+   7. Prevención de Colisiones y Conflictos: Evitar interferencias entre procesos o usuarios, garantizando que cada uno opere en su propio espacio.
+   8. Protección frente a Amenazas Externas: Defender el sistema contra accesos no autorizados provenientes de redes o dispositivos externos.
+3. Como ejemplo en un servidor compartido, propiedad de una empresa, al momento de alojar una base de datos con los clientes se debe dar acceso remoto a todos los empleados que lo necesiten, por lo tanto, el sistema operativo debe garantizar la seguridad de los datos sensibles y la disponibilidad del servicio.
+### Clasificación aplicada a la seguridad
+1. Clasificación de seguridad:
+   1. Seguridad de hardware: Hace referencia a la protección de elementos físicos, incluyendo sistemas de alimentación ininterrumpida (SAI), cortafuegos o firewall de hardware, y módulos de seguridad de hardware (HSM).
+   2. Seguridad de Software: Este concepto se refiere a la protección del software contra ataques de hackers. Incluye casos de desbordamientos de buffer, defectos de diseño o implementación, entre otros.
+   3. Seguridad de red: Es un subtipo de ciberseguridad principalmente relacionado con la protección de datos en red (evitar que la información sea modificada o robada).
+2. Papel de cada tipo de seguridad: *
+   1.  La protección a nivel de hardware garantiza que los recursos físicos del sistema (CPU, memoria, dispositivos de E/S, etc.) se utilicen de manera segura y eficiente.
+   2. Seguridad de software: La protección a nivel de software se encarga de gestionar el acceso a los recursos del sistema a través de mecanismos como permisos, autenticación y aislamiento.
+   3. Seguridad de red: La protección a nivel de red garantiza la seguridad de los datos en tránsito y previene accesos no autorizados desde redes externas o internas.
+3. Ejemplos prácticos:
+   1. Seguridad de hardware: El hardware impide que un programa en modo usuario acceda directamente a los registros de la CPU o a la memoria del kernel, asegurando que los procesos no interfieran entre sí.
+   2. Seguridad de software: Un sistema operativo como Windows utiliza listas de control de acceso (ACL) para definir qué usuarios o grupos pueden interactuar con un archivo específico.
+   3. Seguridad de red: Un servidor web utiliza un certificado SSL para cifrar las conexiones HTTPS, garantizando que los datos sensibles no sean interceptados durante la transmisión.
+### Funciones del sistema de protección:
+1. 
