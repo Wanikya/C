@@ -708,4 +708,614 @@ int main() {
 }
 ~~~
 ### Estructuras de datos para manejo de dispositivos
-1. 
+1. Una cola de entrada/salida (cola de E/S) es una estructura de datos utilizada en sistemas operativos para gestionar las solicitudes de entrada/salida de los dispositivos periféricos, como discos, teclados, impresoras, etc.
+~~~C
+#include <stdio.h>
+#include <stdlib.h>
+
+#define MAX 10  // Tamaño máximo de la cola
+
+// Estructura para un elemento en la cola con prioridad
+typedef struct {
+    int dato;       // Información del elemento
+    int prioridad;  // Prioridad del elemento (menor número = mayor prioridad)
+} Elemento;
+
+// Estructura para la cola con prioridad
+typedef struct {
+    Elemento elementos[MAX];  // Arreglo de elementos
+    int tamano;               // Número actual de elementos en la cola
+} ColaPrioridad;
+
+// Función para inicializar la cola
+void inicializarCola(ColaPrioridad *cola) {
+    cola->tamano = 0;
+}
+
+// Función para verificar si la cola está vacía
+int esVacia(ColaPrioridad *cola) {
+    return cola->tamano == 0;
+}
+
+// Función para verificar si la cola está llena
+int esLlena(ColaPrioridad *cola) {
+    return cola->tamano == MAX;
+}
+
+// Función para insertar un elemento en la cola según su prioridad
+void insertar(ColaPrioridad *cola, int dato, int prioridad) {
+    if (esLlena(cola)) {
+        printf("[ERROR] La cola está llena. No se puede insertar más elementos.\n");
+        return;
+    }
+
+    int i = cola->tamano - 1;
+
+    // Desplazar elementos para mantener el orden de prioridad
+    while (i >= 0 && cola->elementos[i].prioridad > prioridad) {
+        cola->elementos[i + 1] = cola->elementos[i];
+        i--;
+    }
+
+    // Insertar el nuevo elemento en la posición correcta
+    cola->elementos[i + 1].dato = dato;
+    cola->elementos[i + 1].prioridad = prioridad;
+    cola->tamano++;
+
+    printf("[INFO] Elemento %d con prioridad %d insertado correctamente.\n", dato, prioridad);
+}
+
+// Función para eliminar el elemento con mayor prioridad
+void eliminar(ColaPrioridad *cola) {
+    if (esVacia(cola)) {
+        printf("[ERROR] La cola está vacía. No se puede eliminar ningún elemento.\n");
+        return;
+    }
+
+    // El elemento con mayor prioridad está en la primera posición
+    printf("[INFO] Elemento %d con prioridad %d eliminado.\n", 
+            cola->elementos[0].dato, cola->elementos[0].prioridad);
+
+    // Desplazar elementos hacia adelante
+    for (int i = 1; i < cola->tamano; i++) {
+        cola->elementos[i - 1] = cola->elementos[i];
+    }
+
+    cola->tamano--;
+}
+
+// Función para mostrar los elementos de la cola
+void mostrarCola(ColaPrioridad *cola) {
+    if (esVacia(cola)) {
+        printf("[INFO] La cola está vacía.\n");
+        return;
+    }
+
+    printf("Elementos en la cola con prioridad:\n");
+    for (int i = 0; i < cola->tamano; i++) {
+        printf("Dato: %d | Prioridad: %d\n", cola->elementos[i].dato, cola->elementos[i].prioridad);
+    }
+}
+
+int main() {
+    ColaPrioridad cola;
+    inicializarCola(&cola);
+
+    printf("=== Simulación de una Cola con Prioridad ===\n");
+
+    // Insertar elementos en la cola
+    insertar(&cola, 10, 2);
+    insertar(&cola, 20, 1);
+    insertar(&cola, 30, 3);
+    insertar(&cola, 40, 0);  // Prioridad más alta
+
+    // Mostrar el estado actual de la cola
+    mostrarCola(&cola);
+
+    // Eliminar elementos de la cola
+    eliminar(&cola);
+    mostrarCola(&cola);
+
+    eliminar(&cola);
+    mostrarCola(&cola);
+
+    return 0;
+}
+~~~
+Salida:
+~~~
+=== Simulación de una Cola con Prioridad ===
+[INFO] Elemento 10 con prioridad 2 insertado correctamente.
+[INFO] Elemento 20 con prioridad 1 insertado correctamente.
+[INFO] Elemento 30 con prioridad 3 insertado correctamente.
+[INFO] Elemento 40 con prioridad 0 insertado correctamente.
+Elementos en la cola con prioridad:
+Dato: 40 | Prioridad: 0
+Dato: 20 | Prioridad: 1
+Dato: 10 | Prioridad: 2
+Dato: 30 | Prioridad: 3
+[INFO] Elemento 40 con prioridad 0 eliminado.
+Elementos en la cola con prioridad:
+Dato: 20 | Prioridad: 1
+Dato: 10 | Prioridad: 2
+Dato: 30 | Prioridad: 3
+[INFO] Elemento 20 con prioridad 1 eliminado.
+Elementos en la cola con prioridad:
+Dato: 10 | Prioridad: 2
+Dato: 30 | Prioridad: 3
+~~~
+2. Código:
+~~~C
+#include <stdio.h>
+#include <string.h>
+
+// Definición de constantes
+#define MAX_DISPOSITIVOS 5
+#define ACTIVO 1
+#define INACTIVO 0
+
+// Estructura que representa un dispositivo
+typedef struct {
+    int id;                    // Identificador del dispositivo
+    char nombre[20];           // Nombre del dispositivo
+    int estado;                // Estado del dispositivo (ACTIVO/INACTIVO)
+    void (*inicializar)();     // Función para inicializar el dispositivo
+    void (*leer)();            // Función para leer del dispositivo
+    void (*escribir)();        // Función para escribir en el dispositivo
+} Dispositivo;
+
+// Funciones de operaciones para dispositivos
+void inicializarDispositivo() {
+    printf("-> Dispositivo inicializado correctamente.\n");
+}
+
+void leerDispositivo() {
+    printf("-> Leyendo datos del dispositivo...\n");
+}
+
+void escribirDispositivo() {
+    printf("-> Escribiendo datos en el dispositivo...\n");
+}
+
+// Función para mostrar la tabla de dispositivos
+void listarDispositivos(Dispositivo dispositivos[], int n) {
+    printf("\n=== Tabla de Dispositivos ===\n");
+    printf("ID\tNombre\t\tEstado\n");
+    printf("-------------------------------\n");
+    for (int i = 0; i < n; i++) {
+        printf("%d\t%s\t\t%s\n", dispositivos[i].id, dispositivos[i].nombre,
+               dispositivos[i].estado == ACTIVO ? "Activo" : "Inactivo");
+    }
+    printf("\n");
+}
+
+// Función para cambiar el estado de un dispositivo
+void cambiarEstado(Dispositivo dispositivos[], int n, int id) {
+    for (int i = 0; i < n; i++) {
+        if (dispositivos[i].id == id) {
+            dispositivos[i].estado = (dispositivos[i].estado == ACTIVO) ? INACTIVO : ACTIVO;
+            printf("[INFO] El dispositivo '%s' ahora está %s.\n", dispositivos[i].nombre,
+                   dispositivos[i].estado == ACTIVO ? "Activo" : "Inactivo");
+            return;
+        }
+    }
+    printf("[ERROR] No se encontró un dispositivo con ID %d.\n", id);
+}
+
+// Función para ejecutar operaciones en un dispositivo
+void ejecutarOperacion(Dispositivo dispositivos[], int n, int id, char operacion) {
+    for (int i = 0; i < n; i++) {
+        if (dispositivos[i].id == id) {
+            if (dispositivos[i].estado == INACTIVO) {
+                printf("[ERROR] El dispositivo '%s' está inactivo.\n", dispositivos[i].nombre);
+                return;
+            }
+            switch (operacion) {
+                case 'i': dispositivos[i].inicializar(); break;
+                case 'r': dispositivos[i].leer(); break;
+                case 'w': dispositivos[i].escribir(); break;
+                default: printf("[ERROR] Operación inválida.\n"); break;
+            }
+            return;
+        }
+    }
+    printf("[ERROR] No se encontró un dispositivo con ID %d.\n", id);
+}
+
+int main() {
+    // Crear una tabla de dispositivos
+    Dispositivo dispositivos[MAX_DISPOSITIVOS] = {
+        {1, "Teclado", ACTIVO, inicializarDispositivo, leerDispositivo, escribirDispositivo},
+        {2, "Mouse", INACTIVO, inicializarDispositivo, leerDispositivo, escribirDispositivo},
+        {3, "Impresora", ACTIVO, inicializarDispositivo, leerDispositivo, escribirDispositivo},
+        {4, "Escáner", INACTIVO, inicializarDispositivo, leerDispositivo, escribirDispositivo},
+        {5, "Disco Duro", ACTIVO, inicializarDispositivo, leerDispositivo, escribirDispositivo},
+    };
+
+    int opcion, id;
+    char operacion;
+
+    do {
+        printf("=== Manejador de Dispositivos ===\n");
+        printf("1. Listar dispositivos\n");
+        printf("2. Activar/Desactivar un dispositivo\n");
+        printf("3. Ejecutar operación en un dispositivo\n");
+        printf("4. Salir\n");
+        printf("Seleccione una opción: ");
+        scanf("%d", &opcion);
+
+        switch (opcion) {
+            case 1:
+                listarDispositivos(dispositivos, MAX_DISPOSITIVOS);
+                break;
+            case 2:
+                printf("Ingrese el ID del dispositivo a cambiar estado: ");
+                scanf("%d", &id);
+                cambiarEstado(dispositivos, MAX_DISPOSITIVOS, id);
+                break;
+            case 3:
+                printf("Ingrese el ID del dispositivo: ");
+                scanf("%d", &id);
+                printf("Seleccione operación (i = inicializar, r = leer, w = escribir): ");
+                scanf(" %c", &operacion);
+                ejecutarOperacion(dispositivos, MAX_DISPOSITIVOS, id, operacion);
+                break;
+            case 4:
+                printf("Saliendo del programa...\n");
+                break;
+            default:
+                printf("[ERROR] Opción inválida. Inténtelo de nuevo.\n");
+        }
+    } while (opcion != 4);
+
+    return 0;
+}
+~~~
+### Operaciones de Entrada/Salida
+1. Descripción general: Un disco magnético utiliza un sistema mecánico (cabezal de lectura/escritura) para acceder a la información almacenada en su superficie.
+   1. Pasos:
+      1. Solicitud del archivo: El sistema operativo o un programa realiza una solicitud de lectura de un archivo específico.
+      2. Búsqueda del archivo: El sistema operativo consulta la tabla de archivos (como la FAT o MFT) para localizar las pistas, sectores y cilindros donde está almacenado el archivo.
+      3. Movimiento del cabezal: El brazo mecánico mueve el cabezal de lectura al cilindro correspondiente. Este movimiento se llama "seek".
+      4. Rotación del disco: El disco magnético gira para alinear el sector deseado bajo el cabezal. Este tiempo se llama "latencia rotacional".
+      5. Lectura de los datos: El cabezal lee los datos magnéticos del sector correspondiente y los convierte en datos digitales. La información se almacena en el buffer del controlador de disco.
+      6. Transferencia de datos: Los datos leídos se transfieren al sistema operativo a través de un canal de E/S.
+      7. Entrega al programa: Finalmente, los datos se entregan al programa que solicitó la lectura.
+~~~C
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+#include <unistd.h>  // Para la función sleep (simulación de tiempo)
+
+// Definición de constantes
+#define NUM_SECTORES 10  // Número de sectores en el disco simulado
+#define TIEMPO_BUSQUEDA 2  // Tiempo de búsqueda en segundos
+#define TIEMPO_ROTACION 1  // Tiempo de latencia rotacional en segundos
+
+// Estructura para simular un archivo
+typedef struct {
+    char nombre[20];  // Nombre del archivo
+    int sector;       // Sector donde está almacenado el archivo
+} Archivo;
+
+// Simulación de disco
+Archivo disco[NUM_SECTORES];
+
+// Función para inicializar el disco con archivos simulados
+void inicializarDisco() {
+    for (int i = 0; i < NUM_SECTORES; i++) {
+        sprintf(disco[i].nombre, "archivo_%d.txt", i);  // Nombres de archivo
+        disco[i].sector = i;  // Cada archivo en un sector único
+    }
+}
+
+// Función para mostrar el contenido del disco
+void mostrarDisco() {
+    printf("=== Contenido del Disco Simulado ===\n");
+    printf("Sector\tNombre del Archivo\n");
+    printf("-------------------------------\n");
+    for (int i = 0; i < NUM_SECTORES; i++) {
+        printf("%d\t%s\n", disco[i].sector, disco[i].nombre);
+    }
+    printf("\n");
+}
+
+// Función para buscar un archivo en el disco
+int buscarArchivo(char *nombreArchivo) {
+    printf("[INFO] Buscando archivo '%s'...\n", nombreArchivo);
+    sleep(TIEMPO_BUSQUEDA);  // Simula el tiempo de búsqueda
+    for (int i = 0; i < NUM_SECTORES; i++) {
+        if (strcmp(disco[i].nombre, nombreArchivo) == 0) {
+            printf("[INFO] Archivo encontrado en el sector %d.\n", disco[i].sector);
+            return disco[i].sector;
+        }
+    }
+    printf("[ERROR] Archivo '%s' no encontrado.\n", nombreArchivo);
+    return -1;
+}
+
+// Función para leer datos del sector
+void leerSector(int sector) {
+    printf("[INFO] Moviendo cabezal al sector %d...\n", sector);
+    sleep(TIEMPO_ROTACION);  // Simula la latencia rotacional
+    printf("[INFO] Leyendo datos del sector %d...\n", sector);
+    printf("-> Contenido del archivo: 'Datos simulados del %s'\n", disco[sector].nombre);
+}
+
+// Función principal
+int main() {
+    char nombreArchivo[20];
+    int sector;
+
+    printf("=== Simulación de Lectura de Archivo en Disco Magnético ===\n\n");
+
+    // Inicializar disco simulado
+    inicializarDisco();
+
+    // Mostrar contenido del disco
+    mostrarDisco();
+
+    // Solicitar al usuario el nombre del archivo
+    printf("Ingrese el nombre del archivo a leer: ");
+    scanf("%s", nombreArchivo);
+
+    // Buscar archivo
+    sector = buscarArchivo(nombreArchivo);
+
+    // Leer archivo si se encontró
+    if (sector != -1) {
+        leerSector(sector);
+    }
+
+    printf("\n[INFO] Lectura completada. Finalizando programa...\n");
+
+    return 0;
+}
+~~~
+2. Código:
+~~~ C
+#include <stdio.h>
+#include <stdlib.h>
+#include <libaio.h>
+#include <fcntl.h>
+#include <unistd.h>
+
+#define BUFFER_SIZE 1024
+
+int main() {
+    io_context_t ctx;
+    struct iocb cb;
+    struct iocb *cbs[1];
+    char buffer[BUFFER_SIZE];
+    int fd;
+
+    // Inicializar el contexto de E/S asíncrona
+    io_setup(128, &ctx);
+
+    // Abrir el archivo
+    fd = open("ejemplo.txt", O_RDONLY);
+    if (fd == -1) {
+        perror("No se pudo abrir el archivo");
+        return 1;
+    }
+
+    // Configurar la operación de lectura asíncrona
+    io_prep_pread(&cb, fd, buffer, BUFFER_SIZE, 0);
+    cbs[0] = &cb;
+
+    // Ejecutar la operación de lectura asíncrona
+    if (io_submit(ctx, 1, cbs) != 1) {
+        perror("Error al enviar la solicitud de E/S");
+        close(fd);
+        return 1;
+    }
+
+    // Esperar la finalización de la operación
+    struct io_event event;
+    int ret = io_getevents(ctx, 1, 1, &event, NULL);
+    if (ret == 1) {
+        printf("Leído: %s\n", buffer);
+    }
+
+    // Cerrar el archivo
+    close(fd);
+    io_destroy(ctx);
+    return 0;
+}
+~~~
+### Integración
+1. Código:
+~~~C
+#include <stdio.h>
+#include <stdlib.h>
+
+void sort(int arr[], int n) {
+    // Ordenar las solicitudes de los cilindros en orden ascendente
+    for (int i = 0; i < n - 1; i++) {
+        for (int j = i + 1; j < n; j++) {
+            if (arr[i] > arr[j]) {
+                int temp = arr[i];
+                arr[i] = arr[j];
+                arr[j] = temp;
+            }
+        }
+    }
+}
+
+void scan(int arr[], int n, int head, int direction) {
+    // Ordenar las solicitudes
+    sort(arr, n);
+    
+    // Variable para almacenar la distancia total recorrida
+    int total_distance = 0;
+    int current_position = head;
+    
+    // Se mueve en la dirección especificada
+    printf("Cabeza del disco se mueve desde %d hacia %s:\n", head, (direction == 1) ? "derecha" : "izquierda");
+    
+    // Primero atender las solicitudes en la dirección de movimiento
+    if (direction == 1) {
+        // Atender solicitudes en la dirección derecha
+        for (int i = 0; i < n; i++) {
+            if (arr[i] > current_position) {
+                total_distance += abs(arr[i] - current_position);
+                current_position = arr[i];
+                printf("Se atiende solicitud en el cilindro %d\n", arr[i]);
+            }
+        }
+
+        // Luego, se invierte la dirección y se atienden las solicitudes restantes
+        total_distance += abs(current_position - arr[n - 1]); // Moverse hasta el final
+        current_position = arr[n - 1];
+
+        for (int i = n - 1; i >= 0; i--) {
+            if (arr[i] < current_position) {
+                total_distance += abs(arr[i] - current_position);
+                current_position = arr[i];
+                printf("Se atiende solicitud en el cilindro %d\n", arr[i]);
+            }
+        }
+    } else {
+        // Atender solicitudes en la dirección izquierda
+        for (int i = n - 1; i >= 0; i--) {
+            if (arr[i] < current_position) {
+                total_distance += abs(arr[i] - current_position);
+                current_position = arr[i];
+                printf("Se atiende solicitud en el cilindro %d\n", arr[i]);
+            }
+        }
+
+        // Luego, se invierte la dirección y se atienden las solicitudes restantes
+        total_distance += abs(current_position - arr[0]); // Moverse hasta el final
+        current_position = arr[0];
+
+        for (int i = 0; i < n; i++) {
+            if (arr[i] > current_position) {
+                total_distance += abs(arr[i] - current_position);
+                current_position = arr[i];
+                printf("Se atiende solicitud en el cilindro %d\n", arr[i]);
+            }
+        }
+    }
+
+    // Imprimir la distancia total recorrida
+    printf("\nDistancia total recorrida: %d\n", total_distance);
+}
+
+int main() {
+    int n, head, direction;
+
+    // Solicitar al usuario las entradas
+    printf("Ingrese el número de solicitudes: ");
+    scanf("%d", &n);
+
+    int arr[n];
+
+    printf("Ingrese las solicitudes de los cilindros: ");
+    for (int i = 0; i < n; i++) {
+        scanf("%d", &arr[i]);
+    }
+
+    printf("Ingrese la posición inicial de la cabeza del disco: ");
+    scanf("%d", &head);
+
+    printf("Ingrese la dirección de movimiento (1 para derecha, 0 para izquierda): ");
+    scanf("%d", &direction);
+
+    // Llamar a la función de SCAN
+    scan(arr, n, head, direction);
+
+    return 0;
+}
+~~~
+2. Código:
+~~~C
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+
+// Definimos un tamaño máximo para los dispositivos
+#define MAX_BUFFER 256
+
+// Estructura para el dispositivo "Disco Duro"
+typedef struct {
+    char data[MAX_BUFFER]; // Simula el almacenamiento de datos
+} HardDrive;
+
+void hardDrive_write(HardDrive *hd, const char *data) {
+    strncpy(hd->data, data, MAX_BUFFER - 1); // Escribe en el disco
+    printf("Disco duro: Datos escritos en el disco.\n");
+}
+
+void hardDrive_read(HardDrive *hd) {
+    printf("Disco duro: Leyendo del disco: %s\n", hd->data);
+}
+
+// Estructura para el dispositivo "Impresora"
+typedef struct {
+    char data[MAX_BUFFER]; // Datos a imprimir
+} Printer;
+
+void printer_print(Printer *printer) {
+    printf("Impresora: Imprimiendo: %s\n", printer->data);
+}
+
+// Estructura para el dispositivo "Teclado"
+typedef struct {
+    char input[MAX_BUFFER]; // Entrada del teclado
+} Keyboard;
+
+void keyboard_input(Keyboard *keyboard) {
+    printf("Teclado: Introduzca texto para almacenar (máximo 255 caracteres): ");
+    fgets(keyboard->input, MAX_BUFFER, stdin); // Simula la entrada de texto
+    keyboard->input[strcspn(keyboard->input, "\n")] = 0; // Elimina el salto de línea
+}
+
+// Estructura para el controlador de dispositivos
+typedef struct {
+    HardDrive hd;
+    Printer printer;
+    Keyboard keyboard;
+} DeviceController;
+
+// Función para simular la comunicación entre dispositivos
+void simulate_communication(DeviceController *controller) {
+    // Paso 1: El teclado recibe entrada
+    keyboard_input(&controller->keyboard);
+    
+    // Paso 2: El controlador escribe la entrada del teclado en el disco duro
+    hardDrive_write(&controller->hd, controller->keyboard.input);
+    
+    // Paso 3: El disco duro lee y pasa los datos a la impresora
+    hardDrive_read(&controller->hd);
+    strcpy(controller->printer.data, controller->hd.data);
+    
+    // Paso 4: La impresora imprime los datos
+    printer_print(&controller->printer);
+}
+
+int main() {
+    DeviceController controller;
+    
+    // Inicializar los dispositivos (en este caso, simplemente inicializamos sus datos)
+    memset(&controller, 0, sizeof(DeviceController));
+    
+    // Simular la comunicación entre dispositivos
+    simulate_communication(&controller);
+    
+    return 0;
+}
+~~~
+Entrada:
+~~~
+Teclado: Introduzca texto para almacenar (máximo 255 caracteres): Hola, este es un ejemplo de comunicación entre dispositivos.
+~~~
+Salida:
+~~~
+Disco duro: Datos escritos en el disco.
+Disco duro: Leyendo del disco: Hola, este es un ejemplo de comunicación entre dispositivos.
+Impresora: Imprimiendo: Hola, este es un ejemplo de comunicación entre dispositivos.
+~~~
+### Avanzado
+1. Los sistemas operativos modernos optimizan las operaciones de entrada/salida (E/S) mediante el uso de memoria caché, una técnica fundamental que mejora significativamente el rendimiento al reducir la latencia y la sobrecarga asociada con las operaciones de E/S. La memoria caché es una forma de almacenamiento temporal que almacena datos de acceso frecuente o recientemente utilizados, de modo que, cuando un proceso o dispositivo necesita esos datos nuevamente, pueden ser recuperados más rápidamente.
+## Dispositivos de entrada y salida en Linux
