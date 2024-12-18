@@ -1344,4 +1344,25 @@ Impresora: Imprimiendo: Hola, este es un ejemplo de comunicación entre disposit
 3. En la gestión de múltiples equipos tanto físicos como virtuales al momento de crear programas que usen dichos dispositivos.
 ## Comandos de Entrada y Salida, Discos y Archivos
 ### Monstar y desmontar discos
-1. 
+1. ![Imagen 6](https://github.com/Wanikya/C/blob/master/Actividad/imagen_2024-12-18_095637851.png)
+2. ![Imagen 7](https://github.com/Wanikya/C/blob/master/Actividad/imagen_2024-12-18_095557095.png)
+3. ![Imagen 8](https://github.com/Wanikya/C/blob/master/Actividad/imagen_2024-12-18_095700322.png)
+### Redireccón de Entrada y Salida
+1. ![Imagen 9](https://github.com/Wanikya/C/blob/master/Actividad/imagen_2024-12-18_101633656.png)
+### Copiatr y Mover Archivos
+1. ![Archivo 10](https://github.com/Wanikya/C/blob/master/Actividad/imagen_2024-12-18_102224681.png)
+2. ![Archivo 11](https://github.com/Wanikya/C/blob/master/Actividad/imagen_2024-12-18_102253919.png)
+3. ![Archivo 12](https://github.com/Wanikya/C/blob/master/Actividad/imagen_2024-12-18_102352414.png)
+4. ![Archivo 13](https://github.com/Wanikya/C/blob/master/Actividad/imagen_2024-12-18_102509294.png)
+5. ![Archivo 14](https://github.com/Wanikya/C/blob/master/Actividad/imagen_2024-12-18_102939380.png)
+### Comprimir y Descomprimir Archivos
+1. ![Archivo 15](https://github.com/Wanikya/C/blob/master/Actividad/imagen_2024-12-18_104006896.png)
+2. ![Archivo 16](https://github.com/Wanikya/C/blob/master/Actividad/imagen_2024-12-18_105018141.png)
+3. ![Archivo 17](https://github.com/Wanikya/C/blob/master/Actividad/imagen_2024-12-18_105052320.png)
+4. ![Archivo 18](https://github.com/Wanikya/C/blob/master/Actividad/imagen_2024-12-18_105200667.png)
+### Permisos y Propierdaes de Archivos
+1. ![Archivo 19](https://github.com/Wanikya/C/blob/master/Actividad/imagen_2024-12-18_110620005.png)
+### Exploarción de Dispositivos
+1. ![Archivo 20](https://github.com/Wanikya/C/blob/master/Actividad/imagen_2024-12-18_1112110)
+### Crear y Formatear Particiones
+1. ![Archivo 21]()
