@@ -1319,3 +1319,29 @@ Impresora: Imprimiendo: Hola, este es un ejemplo de comunicación entre disposit
 ### Avanzado
 1. Los sistemas operativos modernos optimizan las operaciones de entrada/salida (E/S) mediante el uso de memoria caché, una técnica fundamental que mejora significativamente el rendimiento al reducir la latencia y la sobrecarga asociada con las operaciones de E/S. La memoria caché es una forma de almacenamiento temporal que almacena datos de acceso frecuente o recientemente utilizados, de modo que, cuando un proceso o dispositivo necesita esos datos nuevamente, pueden ser recuperados más rápidamente.
 ## Dispositivos de entrada y salida en Linux
+### Listar dispositivos conectados
+1. Se muestran "loops", "disk", "part" y "rom"
+![Imagen 1](https://github.com/Wanikya/C/blob/master/Actividad/imagen_2024-12-17_184447700.png?raw=true)
+2. lsusb solo muestra los usb disponibles y lspci muestra todos los controladores instalados.
+![Imagen 2](https://github.com/Wanikya/C/blob/master/Actividad/imagen_2024-12-17_184548150.png?raw=true)
+3. Proporciona un log que muestra los cambios y actualizaciones en los drives y puertos de usb.
+![Imagen 3](https://github.com/Wanikya/C/blob/master/Actividad/imagen_2024-12-17_184605044.png?raw=true)
+### Verificar dispositivos conectados
+1. Hay un dispositivo de almacenamiento conectado al sistema
+2. Actualmente están instaladas 24 particiones
+3. Està el tipo ext4 en el sistema operativo
+### Explorar dispositivos de entrada
+### Examinar dispositivos de salida
+1. ![Imagen 4](https://github.com/Wanikya/C/blob/master/Actividad/imagen_2024-12-17_185814454.png)
+
+2. ![Imagen 5](https://github.com/Wanikya/C/blob/master/Actividad/imagen_2024-12-17_190035781.png)
+
+3.
+### Crear un script de resumen
+### Reflexión y discusión
+1. El comando que me pareció más útil fue el de lsblk puesto que me permite tener un control de los discos y las particiones instaldas en el sistema operativo.
+2. Mucho, ya que permite gestionar los dispositivos y ubicar si alguno funciona mal para corregirlo.
+3. En la gestión de múltiples equipos tanto físicos como virtuales al momento de crear programas que usen dichos dispositivos.
+## Comandos de Entrada y Salida, Discos y Archivos
+### Monstar y desmontar discos
+1. 
